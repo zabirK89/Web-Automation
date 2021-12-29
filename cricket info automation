@@ -1,1 +1,65 @@
 
+
+function waitAndClick(selector, cPage) {
+    return new Promise(function (resolve, reject) {
+        let waitForModelpromise = cPage.waitForSelector(selector)
+        waitForModelpromise.then(function(){
+            let clickModal = cPage.click(selector)
+            return clickModal
+        }).then(function(){
+            resolve()
+        }).catch(function(err){
+            reject()
+        })
+
+    })
+
+}
+
+function questionSolver(page,question, answer ){
+    return new Promise(function(resolve,reject){
+        let questionWillBeClicked = question.click()
+        questionWillBeClicked.then(function(){
+            let editorPromise = waitAndClick('.monaco-editor.no-user-select.vs',page)
+            return editorPromise
+        }) .then(function(){
+            return waitAndClick('.checkbox-input',page)
+        }).then(function(){
+            return page.waitForSelector('.input.text-area.custominput.auto-width',page)
+         }).then(function(){
+             return page.type('.input.text-area.custominput.auto-width',answer,{delay:30})
+         }).then(function(){
+             let ctrlIsPressed = page.keyboard.down('Control')
+             return ctrlIsPressed
+         }).then(function(){
+             let aIsPressed =  page.keyboard.down('A',{delay:50})
+             return aIsPressed
+         }).then(function(){
+             let xIsPressed = page.keyboard.down('X',{delay:20})
+             return xIsPressed
+         }).then(function(){
+             let ctrlIsUnPressed = page.keyboard.up('Control')
+             return ctrlIsUnPressed
+         }).then(function(){
+             let mainEditor = waitAndClick('.monaco-editor.no-user-select.vs',page)
+             return mainEditor
+         }).then(function(){
+
+         }).then(function(){
+             let ctrlIsPressed = page.keyboard.down('Control')
+             return ctrlIsPressed
+         }).then(function(){
+            let aIsPressed =  page.keyboard.down('A',{delay:50})
+            return aIsPressed
+        }).then(function(){
+            let vIsPressed =  page.keyboard.down('V',{delay:50})
+            return vIsPressed
+        }).then(function(){
+            let ctrlIsUnPressed = page.keyboard.up('Control')
+            return ctrlIsUnPressed
+        }).then(function(){
+            let runCodeButtonIsClicked = page.click('.hr-monaco__run-code.ui-btn-styled',{delay:10})
+            return runCodeButtonIsClicked
+        })
+    })
+}
